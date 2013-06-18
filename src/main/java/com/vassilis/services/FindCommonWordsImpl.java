@@ -9,19 +9,21 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Set;
 
+import com.vassilis.utility.CharArrayWrapper;
+
 /**
  * This class finds the common words and at the same time emits the results
  * into a 3rd file which will eventually contain the common words.
  * From engineering point of view, we could decouple the second functionality 
  * creating a separate layer (DAO) responsible for storing the common words to a storage
- * device regardless of what it is.   
+ * device regardless of what it is.
  * 
  * @author Vassilis Fotopoulos
  *
  */
-public class FindCommonWordsImpl implements FindCommonWords {
+public class FindCommonWordsImpl {
 	
-	public void findCommonWords(Set<String> smallFileCache, File file, File destinationFile) {
+	public void findCommonWords(Set<CharArrayWrapper> smallFileCache, File file, File destinationFile) {
 		BufferedReader reader=null;
 		BufferedWriter writer = null;
 		try {
@@ -30,7 +32,7 @@ public class FindCommonWordsImpl implements FindCommonWords {
 			String word;
 			
 			while( (word=reader.readLine()) != null) {
-				if(smallFileCache.contains(word)) {
+				if(smallFileCache.contains(new CharArrayWrapper(word.toCharArray()))) {
 					writer.write(word);
 				}
 			}

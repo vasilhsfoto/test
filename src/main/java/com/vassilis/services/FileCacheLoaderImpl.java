@@ -8,18 +8,21 @@ import java.io.IOException;
 import java.util.HashSet;
 import java.util.Set;
 
-public class FileCacheLoaderImpl implements FileCacheLoader {
+import com.vassilis.utility.CharArrayWrapper;
 
-	public Set<String> loadFileInCache(File file) {
-		Set<String> cache = new HashSet<String>();
+public class FileCacheLoaderImpl {
+
+	public Set<CharArrayWrapper> loadFileInCache(File file) {
+		Set<CharArrayWrapper> cache = new HashSet<CharArrayWrapper>();
 		BufferedReader reader=null;
 		
 		try {
+			
 			reader = new BufferedReader(new FileReader(file));
 			String word;
 			
 			while( (word=reader.readLine()) != null) {
-				cache.add(word);
+				cache.add(new CharArrayWrapper(word.toCharArray()));
 			}
 			
 			return cache;
