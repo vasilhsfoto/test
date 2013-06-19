@@ -4,13 +4,13 @@ Simple implementation of finding common words between 2 files and write them int
 Assume that the program was started with -Xmx256M and that each string has on average 8 characters.
 
 Since we load the content of the small file into the Heap; we are limited by the Heap size
-allocated in the running VM. If each word has on average 8 characters (16 Bytes) and the Max available
+allocated in the running VM. If each word has on average of 8 characters (16 Bytes) and the Max available
 Heap is 256 x 1024 x 1024 = 268,435,456 Bytes, we could theoretically load in memory a file with an average of 16,777,216 words
 
 2. What would you do to increase this limit ?
 
-Although now we improved the memory footprint of the program storing char[] arrays rather than String objects, 
-the algorithm apparently is not scalable.   
+Although now we improved the memory footprint of the program storing char[] arrays rather than String objects,
+the algorithm apparently is not scalable. To increate the limit I would increase the max allocated Heap size of JVM.
  
 3. Is your program efficient ?
 
@@ -20,11 +20,11 @@ if we want to calculate common words between huge files i.e TB in size then we w
 
 4. What would you do to increase its execution performance ?
 
-This replies to the 3rd question as well, how to make the program more efficient in terms of performance.  
-I) One solution, is to load parts of the smallest file into memory (so to avoid outOfMem exception) and compare 
-them against the second file. Then you repeat the process until you have examined all the content of the smallest file.
-This way you need to read the second file more than once.
+This replies to the 2nd question as well, how to make the program more efficient in terms of performance.
+I) Split one file into let's say equally fixed chuncks that can be held into Heap. Compare every chunck of first file
+with the content of the second file. Emit the common words into your result set. Repeat the process till you examine
+the last chunck of first file. 
+pros: you avoid outMemException
+downsides: you need to re-read the content of the second file
 
-II) Using a framework for parallel processing of vast amount of data. like Map Reduce (M/R) on top of
-Hadoop. Without going into details of how to solve the problem utilizing M/R; the solution given is equal to Map Side join.     
-A reduce side join would be an good fit in case we want to deal with vast volumes of Data.
+II) Using a distributed processing framework like M/R on top of HDFS.
